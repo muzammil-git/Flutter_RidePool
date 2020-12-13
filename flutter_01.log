@@ -1,0 +1,102 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run
+
+## exception
+
+NoSuchMethodError: NoSuchMethodError: The method 'toFilePath' was called on null.
+Receiver: null
+Tried calling: toFilePath()
+
+```
+#0      Object.noSuchMethod (dart:core-patch/object_patch.dart:51:5)
+#1      defaultHandler (package:devtools_server/src/external_handlers.dart:35:60)
+<asynchronous suspension>
+#2      serveDevTools (package:devtools_server/src/server.dart:219:21)
+#3      DevtoolsLauncher.serve (package:flutter_tools/src/resident_runner.dart:1734:33)
+#4      DevtoolsLauncher.launch (package:flutter_tools/src/resident_runner.dart:1717:13)
+#5      ResidentRunner.launchDevTools (package:flutter_tools/src/resident_runner.dart:1269:30)
+#6      TerminalHandler._commonTerminalInputHandler (package:flutter_tools/src/resident_runner.dart:1614:32)
+#7      TerminalHandler.processTerminalInput (package:flutter_tools/src/resident_runner.dart:1643:13)
+#8      _rootRunUnary (dart:async/zone.dart:1198:47)
+#9      _CustomZone.runUnary (dart:async/zone.dart:1100:19)
+#10     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1005:7)
+#11     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:357:11)
+#12     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:285:7)
+#13     _SyncBroadcastStreamController._sendData (dart:async/broadcast_stream_controller.dart:385:25)
+#14     _BroadcastStreamController.add (dart:async/broadcast_stream_controller.dart:250:5)
+#15     _AsBroadcastStreamController.add (dart:async/broadcast_stream_controller.dart:484:11)
+#16     _rootRunUnary (dart:async/zone.dart:1198:47)
+#17     _CustomZone.runUnary (dart:async/zone.dart:1100:19)
+#18     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1005:7)
+#19     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:357:11)
+#20     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:285:7)
+#21     _SinkTransformerStreamSubscription._add (dart:async/stream_transformers.dart:69:11)
+#22     _EventSinkWrapper.add (dart:async/stream_transformers.dart:15:11)
+#23     _StringAdapterSink.add (dart:convert/string_conversion.dart:238:11)
+#24     _StringAdapterSink.addSlice (dart:convert/string_conversion.dart:243:7)
+#25     _Utf8ConversionSink.addSlice (dart:convert/string_conversion.dart:317:20)
+#26     _ErrorHandlingAsciiDecoderSink.addSlice (dart:convert/ascii.dart:256:17)
+#27     _ErrorHandlingAsciiDecoderSink.add (dart:convert/ascii.dart:242:5)
+#28     _ConverterStreamEventSink.add (dart:convert/chunked_conversion.dart:72:18)
+#29     _SinkTransformerStreamSubscription._handleData (dart:async/stream_transformers.dart:121:24)
+#30     _rootRunUnary (dart:async/zone.dart:1198:47)
+#31     _CustomZone.runUnary (dart:async/zone.dart:1100:19)
+#32     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1005:7)
+#33     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:357:11)
+#34     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:285:7)
+#35     _SyncStreamControllerDispatch._sendData (dart:async/stream_controller.dart:808:19)
+#36     _StreamController._add (dart:async/stream_controller.dart:682:7)
+#37     _StreamController.add (dart:async/stream_controller.dart:624:5)
+#38     _Socket._onData (dart:io-patch/socket_patch.dart:2044:41)
+#39     _rootRunUnary (dart:async/zone.dart:1206:13)
+#40     _CustomZone.runUnary (dart:async/zone.dart:1100:19)
+#41     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1005:7)
+#42     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:357:11)
+#43     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:285:7)
+#44     _SyncStreamControllerDispatch._sendData (dart:async/stream_controller.dart:808:19)
+#45     _StreamController._add (dart:async/stream_controller.dart:682:7)
+#46     _StreamController.add (dart:async/stream_controller.dart:624:5)
+#47     new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:1580:33)
+#48     _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:1076:14)
+#49     _microtaskLoop (dart:async/schedule_microtask.dart:41:21)
+#50     _startMicrotaskLoop (dart:async/schedule_microtask.dart:50:5)
+#51     _runPendingImmediateCallback (dart:isolate-patch/isolate_patch.dart:118:13)
+#52     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:169:5)
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 1.22.3, on Linux, locale en_US.UTF-8)
+    • Flutter version 1.22.3 at /home/dualweilder/Installed/flutter
+    • Framework revision 8874f21e79 (4 weeks ago), 2020-10-29 14:14:35 -0700
+    • Engine revision a1440ca392
+    • Dart version 2.10.3
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 30.0.2)
+    • Android SDK at /home/dualweilder/Installed/Android
+    • Platform android-30, build-tools 30.0.2
+    • ANDROID_HOME = /home/dualweilder/Installed/Android
+    • ANDROID_SDK_ROOT = /home/dualweilder/Installed/Android
+    • Java binary at: /usr/bin/java
+    • Java version OpenJDK Runtime Environment (build 11.0.9.1+1-Ubuntu-0ubuntu1.20.04)
+    • All Android licenses accepted.
+
+[!] Android Studio (not installed)
+    • Android Studio not found; download from https://developer.android.com/studio/index.html
+      (or visit https://flutter.dev/docs/get-started/install/linux#android-setup for detailed instructions).
+
+[!] VS Code (version 1.51.1)
+    • VS Code at /usr/share/code
+    ✗ Flutter extension not installed; install from
+      https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter
+
+[✓] Connected device (1 available)
+    • sdk gphone x86 arm (mobile) • emulator-5554 • android-x86 • Android 11 (API 30) (emulator)
+
+! Doctor found issues in 2 categories.
+```
