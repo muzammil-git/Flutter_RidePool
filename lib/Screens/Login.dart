@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
 
   bool numberValidator(number){
     setState(() {
-    const pattern = r'^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$';
+    const pattern = r'^(\+92|0|92|00)[3]{1}[0-4]{1}[0-9]{8}$';
     final regExp = RegExp(pattern);
     if(regExp.hasMatch(number)){
       _submitValidPhone = true;
