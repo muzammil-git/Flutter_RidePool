@@ -6,9 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:ridepool/Helper/Datalogin.dart';
 import 'package:ridepool/Screens/AddressSearch.dart';
 import 'package:ridepool/Screens/configureScreen.dart';
-import 'package:ridepool/Screens/homeMap.dart';
 import 'package:uuid/uuid.dart';
-
 
 class HomeScreen extends StatefulWidget {
   DataLogin data;
@@ -27,9 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   static final CameraPosition _initialPosition =
       CameraPosition(target: LatLng(24.9204, 67.1344), zoom: 14);
-
-
-
 
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
 
@@ -50,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Store the position in the variable
         _currentPosition = position;
 
-        print('CURRENT POS: $_currentPosition');
+        print('CURRENT POSITION: $_currentPosition');
 
         // For moving the camera to current location
         _controller.animateCamera(
@@ -77,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     double _deviceWidth = MediaQuery.of(context).size.width;
-    double _deviceHeight = MediaQuery.of(context).size.height;
+    // double _deviceHeight = MediaQuery.of(context).size.height;
 
     return new Scaffold(
       // extendBodyBehindAppBar: true,
@@ -166,13 +161,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
 
-                onTap: ()async{
-                  final sessionToken = Uuid().v4();
-                  showSearch(
-                      context: context,
-                      delegate: AddressSearch(sessionToken));
+              onTap: ()async{
+                final sessionToken = Uuid().v4();
+                showSearch(
+                    context: context,
+                    delegate: AddressSearch(sessionToken));
                 },
-
             ),
           ),
         )
@@ -250,10 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new MyHomePage()));
+                  Navigator.of(context).pop();
                 },
                 icon: Icon(Icons.arrow_back_ios_sharp))
           ],

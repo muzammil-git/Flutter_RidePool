@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ridepool/Helper/Datalogin.dart';
 import 'package:ridepool/Screens/Register.dart';
 import 'package:ridepool/Screens/RidingPanel.dart';
 import 'package:ridepool/Screens/configureScreen.dart';
@@ -11,13 +12,12 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _myNumber= TextEditingController();
   TextEditingController _myPassword= TextEditingController();
+  final _loginFormKey = GlobalKey<FormState>();
+  DataLogin _login = new DataLogin();
 
   bool _phoneValid = true;
   bool _passwordValid = true;
   bool _obscureText = true;
-
-  bool _submitValidPhone = false;
-  bool _submitValidPassword = false;
 
   Color _visibilityIconColor = Colors.grey;
 
@@ -40,38 +40,42 @@ class _LoginState extends State<Login> {
     });
   }
 
-  bool numberValidator(number){
-    setState(() {
+  String numberValidator(number){
     const pattern = r'^(\+92|0|92|00)[3]{1}[0-4]{1}[0-9]{8}$';
     final regExp = RegExp(pattern);
     if(regExp.hasMatch(number)){
-      _submitValidPhone = true;
-      return _phoneValid = true;
+      return null;
     } else{
-      _submitValidPhone = false;
-      return _phoneValid = false;
+      return 'Invalid Number';
     }
-    });
+  }
+  String checkPassword(String password) {
+    if(password.length < 8){
+      return 'Atleast 8 characters';
+    }
   }
 
-  bool passwordValidator(password){
-    setState(() {
-      if(password.length >= 8){
-        _submitValidPassword = true;
-        return _passwordValid = true;
-      }
-      else{
-        _submitValidPassword = false;
-        return _passwordValid = false;
-      }
-    });
-  }
+  void onPressedLogin(context) {
+    var form = _loginFormKey.currentState;
+    if (form.validate()) {
+      form.save();
+      _login.check();
 
-  bool submitChecker(){
-    if((_submitValidPhone && _submitValidPassword) == true){
-      return true;
-    }else{
-      return false;
+      FocusScopeNode currentFocus = FocusScope.of(
+          context); //Keyboard disappears
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+
+      Future.delayed(
+        Duration(seconds: 2), () { //call back after 500  microseconds
+
+        Navigator.push(context, new MaterialPageRoute(
+            builder: (context) => new HomeScreen(data: _login,)));
+        _myNumber.clear(); // clear textfield
+        _myPassword.clear();
+      },
+      );
     }
   }
 
@@ -99,120 +103,122 @@ class _LoginState extends State<Login> {
             // height: _deviceHeight*0.8,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: _deviceWidth*0.1),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('images/drawerRide.png'),
-                  Text('Login',style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold),),
-                  Divider(),
-                  //Phone Number Field
-                  TextField(
-                    onChanged: (_myNumber){
-                      print('Phone Number: $_myNumber');
-                      numberValidator(_myNumber);
-                    },
-                    keyboardType: TextInputType.phone,
-                    controller: _myNumber,
-                    decoration: InputDecoration(
-                        hintText: 'Phone Number',
-                        prefixIcon: Icon(Icons.phone),
-                        errorText: _phoneValid ? null : "Invalid Number",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        )
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  //Password Field
-                  TextField(
-                    onChanged: (_myPassword){
-                      print('Password: $_myPassword');
-                      passwordValidator(_myPassword);
-                    },
-                    controller: _myPassword,
-                    obscureText: _obscureText,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.visibility_off, color: _visibilityIconColor),
-                        onPressed: (){
-                          changeObscure();
-                        },
+              child: Form(
+                key: _loginFormKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('images/drawerRide.png'),
+                    Text('Login',style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold),),
+                    Divider(),
+                    //Phone Number Field
+                    TextFormField(
+                      keyboardType: TextInputType.phone,
+                      controller: _myNumber,
+                      decoration: InputDecoration(
+                          hintText: 'Phone Number',
+                          prefixIcon: Icon(Icons.phone),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          )
                       ),
-                      prefixIcon: Icon(Icons.vpn_key),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      errorText: _passwordValid ? null : 'Atleast 8 characters',
-                    ),
-                  ),
-                  SizedBox(height: 30,),
-                  //Forget Password Field & Login
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:<Widget>[
-                        Text(
-                          'Forget Password?' ,
-                          style: TextStyle(fontSize: 12,decoration: TextDecoration.underline,),
-                        ),
+                      validator:(_phoneNumber){
+                        return numberValidator(_phoneNumber);
+                      },
+                      onChanged: (_phoneNumber){
+                        print('Phone Number: $_phoneNumber');
+                      },
+                      onSaved: (_phoneNumber){
+                        _login.phone = _phoneNumber;
+                        _login.firstName ='Test';
+                        _login.lastName ='User';
+                      },
 
-                        //Login Button
-                        RaisedButton(
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    //Password Field
+                    TextFormField(
+                      controller: _myPassword,
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.visibility_off, color: _visibilityIconColor),
                           onPressed: (){
-                            if(submitChecker() == true){
-                              Future.delayed(Duration(
-                                  seconds: 2), () { //call back after 500  microseconds
-                                Navigator.push(context, new MaterialPageRoute(
-                                    builder: (context) => new HomeScreen()));
-                                _myNumber.clear(); // clear textfield
-                                _myPassword.clear();
-                                Focus.of(context).unfocus();
-                              },
-                              );
-                          }else{
-                              print('NO access');
-                            }
-                            },
-                          color: Color(0xffEE7B23),
-                          child: Text('Login',style: TextStyle(color: Colors.white),),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-
-                  //Register Button
-                  InkWell(
-                    onTap: (){
-                        Future.delayed(Duration(milliseconds: 500),(){
-                          Navigator.push(context, new MaterialPageRoute(builder: (context) => new Register()));
+                            changeObscure();
                           },
-                        );
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text.rich(
-                            TextSpan(
-                              text: 'Don\'t have an account? ',
-                              children:<TextSpan>[
-                                TextSpan(text: 'Register', style:TextStyle(fontWeight: FontWeight.bold))
+                        ),
+                        prefixIcon: Icon(Icons.vpn_key),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        errorText: _passwordValid ? null : 'Atleast 8 characters',
+                      ),
+                      validator: (_myPassword){
+                        return checkPassword(_myPassword);
+                      },
+                      onChanged: (_myPassword){
+                        print('Password: $_myPassword');
+                      },
+                      onSaved: (_myPassword){
+                        _login.password = _myPassword;
+                      },
+                    ),
+                    SizedBox(height: 30,),
+                    //Forget Password Field & Login
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:<Widget>[
+                          Text(
+                            'Forget Password?' ,
+                            style: TextStyle(fontSize: 12,decoration: TextDecoration.underline,),
+                          ),
 
-                              ],
+                          //Login Button
+                          RaisedButton(
+                            onPressed: (){
+                              onPressedLogin(context);
+                            },
+                            color: Color(0xffEE7B23),
+                            child: Text('Login',style: TextStyle(color: Colors.white),),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+
+                    //Register Button
+                    InkWell(
+                      onTap: (){
+                          Future.delayed(Duration(milliseconds: 500),(){
+                            Navigator.push(context, new MaterialPageRoute(builder: (context) => new Register()));
+                            },
+                          );
+                      },
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text.rich(
+                              TextSpan(
+                                text: 'Don\'t have an account? ',
+                                children:<TextSpan>[
+                                  TextSpan(text: 'Register', style:TextStyle(fontWeight: FontWeight.bold))
+
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-
-                ],
+                  ],
+                ),
               ),
             ),
           ),

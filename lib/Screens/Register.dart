@@ -86,7 +86,6 @@ class _RegisterState extends State<Register> {
     }
   }
 
-
   void onPressedRegister(context){
     var form = formKey.currentState;
     if (form.validate()){
@@ -352,7 +351,3 @@ class _RegisterState extends State<Register> {
   }
 
 }
-
-
-
-

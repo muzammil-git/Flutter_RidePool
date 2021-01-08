@@ -16,6 +16,7 @@ class DataLogin {
     print(email);
     print(password);
   }
-
+  // DataLogin(this.phone,this.password);
+  // DataLogin(this.firstName,this.lastName,this.phone, this.cnic,this.email,this.password);
   // DataLogin({this.firstName,this.lastName});
 }

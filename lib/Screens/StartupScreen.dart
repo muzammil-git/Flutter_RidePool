@@ -2,33 +2,30 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ridepool/Screens/configureScreen.dart';
 
-class SplashScreen extends StatefulWidget {
-  final Color backgroundColor = Colors.white;
-  final TextStyle styleTextUnderTheLoader = TextStyle(
-      fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black);
-
+class StartupScreen extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _StartupScreenState createState() => _StartupScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _StartupScreenState extends State<StartupScreen> {
 
-  String _versionName = 'Version: 1.0';
-  final splashDelay = 5;
+  String _appVersion = 'Version: 1.0';
+  String platform = "Android";
+  final int futureDelay = 5;
+
+  void pageNavigate() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => display()));
+  }
+
+  _routeTimer() async {
+    var _duration = Duration(seconds: futureDelay);
+    return Timer(_duration, pageNavigate);
+  }
 
   @override
   void initState() {
     super.initState();
-    _loadWidget();
-  }
-
-  _loadWidget() async {
-    var _duration = Duration(seconds: splashDelay);
-    return Timer(_duration, navigationPage);
-  }
-
-  void navigationPage() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => display()));
+    _routeTimer();
   }
 
   @override
@@ -36,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: InkWell(
         child: Stack(
-          fit: StackFit.expand,
+          // fit: StackFit.expand,
           children: <Widget>[
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -47,8 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('RidePool',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 32),),
-
+                          Text('RidePool',
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 32),),
                           Image.asset(
                             'images/drawerRide.png',
                             height: 300,
@@ -60,31 +57,33 @@ class _SplashScreenState extends State<SplashScreen> {
                         ],
                       )),
                 ),
+                CircularProgressIndicator(strokeWidth: 3,),
+                SizedBox(height: 70,),
                 Expanded(
                   child: Column(
                     children: <Widget>[
-
-                      CircularProgressIndicator(),
-                      Container(
-                        height: 10,
+                      SizedBox(
+                        height: 20,
                       ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             Spacer(),
-                            Text(_versionName),
-                            Spacer(
-                              flex: 4,
-                            ),
-                            Text('Android'),
+                            RichText(text: TextSpan(text: _appVersion,
+                                style: TextStyle(color: Colors.black, fontSize: 15,decoration: TextDecoration.underline))),
+                            Spacer(flex: 4,),
+                            RichText(text: TextSpan(text: platform,
+                                style: TextStyle(color: Colors.black, fontSize: 15, decoration: TextDecoration.underline))),
                             Spacer(),
-                          ])
+                          ]
+                      )
                     ],
                   ),
                 ),
               ],
             ),
           ],
+          overflow: Overflow.clip,//handles the overflow in the stack and clips inside the bound
         ),
       ),
     );
