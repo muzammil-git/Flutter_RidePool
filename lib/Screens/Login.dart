@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ridepool/Helper/Datalogin.dart';
+import 'package:ridepool/Helper/Data.dart';
 import 'package:ridepool/Screens/Register.dart';
 import 'package:ridepool/Screens/RidingPanel.dart';
 import 'package:ridepool/Screens/configureScreen.dart';
@@ -15,8 +15,6 @@ class _LoginState extends State<Login> {
   final _loginFormKey = GlobalKey<FormState>();
   DataLogin _login = new DataLogin();
 
-  bool _phoneValid = true;
-  bool _passwordValid = true;
   bool _obscureText = true;
 
   Color _visibilityIconColor = Colors.grey;
@@ -49,6 +47,7 @@ class _LoginState extends State<Login> {
       return 'Invalid Number';
     }
   }
+
   String checkPassword(String password) {
     if(password.length < 8){
       return 'Atleast 8 characters';
@@ -78,7 +77,6 @@ class _LoginState extends State<Login> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +152,6 @@ class _LoginState extends State<Login> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        errorText: _passwordValid ? null : 'Atleast 8 characters',
                       ),
                       validator: (_myPassword){
                         return checkPassword(_myPassword);
