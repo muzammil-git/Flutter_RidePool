@@ -12,7 +12,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 
-
   DataLogin _Data = new DataLogin();
   final formKey = GlobalKey<FormState>();
   final mainKey = GlobalKey<ScaffoldState>();
