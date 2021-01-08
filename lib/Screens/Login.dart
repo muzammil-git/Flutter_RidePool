@@ -16,9 +16,7 @@ class _LoginState extends State<Login> {
   DataLogin _login = new DataLogin();
 
   bool _obscureText = true;
-
   Color _visibilityIconColor = Colors.grey;
-
 
   void initState(){
     super.initState();
@@ -38,7 +36,7 @@ class _LoginState extends State<Login> {
     });
   }
 
-  String numberValidator(number){
+  String numberValidator(number) {
     const pattern = r'^(\+92|0|92|00)[3]{1}[0-4]{1}[0-9]{8}$';
     final regExp = RegExp(pattern);
     if(regExp.hasMatch(number)){
@@ -221,7 +219,6 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-
     );
   }
 }
